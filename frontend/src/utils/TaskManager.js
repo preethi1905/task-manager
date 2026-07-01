@@ -1,9 +1,5 @@
 
-const API_BASE_URL = typeof process !== 'undefined' && process.env.API_URL
-  ? process.env.API_URL
-  : '/api/tasks';
-
-
+const API_BASE_URL = process.env.API_URL || '/api/tasks';
 
 class TaskManager {
   constructor(apiBaseUrl = API_BASE_URL) {
@@ -21,21 +17,17 @@ class TaskManager {
       throw new Error(errorBody.message || `Request failed with status ${response.status}`);
     }
 
-  
     return response.json();
   }
-
 
   async fetchAll(status) {
     const query = status ? `?status=${encodeURIComponent(status)}` : '';
     return this._request(query, { method: 'GET' });
   }
 
-
   async fetchOne(id) {
     return this._request(`/${id}`, { method: 'GET' });
   }
-
 
   async create(taskData) {
     return this._request('', {
@@ -58,7 +50,6 @@ class TaskManager {
     }
     return this.update(id, { status });
   }
-
 
   async remove(id) {
     return this._request(`/${id}`, { method: 'DELETE' });
